@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ produto.nome }} — {{ config.nome_loja }}{% endblock %}
+{% block content %}
+
+<section class="pagina-produto">
+  <div class="wrap produto-inner">
+    <a href="/" class="voltar">← Voltar ao catálogo</a>
+
+    <div class="produto-grid">
+      <div class="produto-imagem">
+        <img src="{{ url_for('static', filename='img/' ~ produto.imagem) }}"
+             alt="{{ produto.nome }}"
+             onerror="this.parentElement.classList.add('sem-foto'); this.remove();">
+        <span class="placeholder-flor">✿</span>
+      </div>
+
+      <div class="produto-info">
+        <p class="cartao-categoria">{{ produto.categoria }}</p>
+        <h1 class="produto-nome">{{ produto.nome }}</h1>
+        <p class="produto-preco">{{ preco_formatado(produto) }}</p>
+        <p class="produto-descricao">{{ produto.descricao }}</p>
+        <a class="cartao-botao produto-botao" target="_blank" href="{{ link_whatsapp(produto) }}">
+          Comprar pelo WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

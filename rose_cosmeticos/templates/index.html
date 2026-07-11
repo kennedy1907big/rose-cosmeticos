@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <p class="hero-eyebrow">✿ coleção completa ✿</p>
+    <h1 class="hero-title">Beleza que floresce<br>em cada detalhe</h1>
+    <p class="hero-text">Sabonetes íntimos e kits de corpo e rosto com aroma de frutas,
+       feitos para cuidar de você todos os dias.</p>
+  </div>
+</section>
+
+<section class="catalogo">
+  <div class="wrap">
+
+    <div class="filtros" id="filtros">
+      <button class="filtro-btn is-ativo" data-filtro="todos">Todos</button>
+      {% for cat in categorias %}
+      <button class="filtro-btn" data-filtro="{{ cat }}">{{ cat }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="grade" id="grade">
+      {% for p in produtos %}
+      <article class="cartao" data-categoria="{{ p.categoria }}">
+        <a href="/produto/{{ p.id }}" class="cartao-imagem-link">
+          <div class="cartao-imagem">
+            <img src="{{ url_for('static', filename='img/' ~ p.imagem) }}"
+                 alt="{{ p.nome }}"
+                 onerror="this.parentElement.classList.add('sem-foto'); this.remove();">
+            <span class="placeholder-flor">✿</span>
+          </div>
+        </a>
+        <div class="cartao-corpo">
+          <p class="cartao-categoria">{{ p.categoria }}</p>
+          <h3 class="cartao-nome"><a href="/produto/{{ p.id }}">{{ p.nome }}</a></h3>
+          <p class="cartao-preco">{{ preco_formatado(p) }}</p>
+          <a class="cartao-botao" target="_blank" href="{{ link_whatsapp(p) }}">Comprar</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const botoes = document.querySelectorAll('.filtro-btn');
+  const cartoes = document.querySelectorAll('.cartao');
+  botoes.forEach(btn => {
+    btn.addEventListener('click', () => {
+      botoes.forEach(b => b.classList.remove('is-ativo'));
+      btn.classList.add('is-ativo');
+      const alvo = btn.dataset.filtro;
+      cartoes.forEach(c => {
+        const mostra = (alvo === 'todos' || c.dataset.categoria === alvo);
+        c.style.display = mostra ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+{% endblock %}
